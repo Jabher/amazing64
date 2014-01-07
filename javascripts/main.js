@@ -219,6 +219,11 @@ var viewManager = (function () {
     DROP_ZONE.addEventListener('dragleave', wrap(function (e) {
         DROP_CONTAINER.classList.remove('dragover');
     }));
+    window.addEventListener('dragleave', wrap(function (e) {
+        if (e.target == DROP_CONTAINER) {
+            DROP_CONTAINER.classList.remove('dragover');
+        }
+    }));
     DROP_CONTAINER.addEventListener('drop', wrap(function (e) {
         DROP_CONTAINER.classList.remove('dragover');
         [].forEach.call(e.dataTransfer.files, fileDropped);
