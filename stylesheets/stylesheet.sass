@@ -135,6 +135,7 @@ section
     width: $preview-width
     margin-right: $margin
     position: relative
+    z-index: 1
     .image
       max-width: $preview-width
       max-height: $body-height
@@ -144,6 +145,7 @@ section
       left: 50%
       top: 50%
       -webkit-transform: translate(-50%, -50%)
+      transform: translate(-50%, -50%)
       &:before
         content: ''
         position: relative
@@ -167,7 +169,8 @@ section
         left: 50%
         top: 50%
         -webkit-transform: translate(-50%, -50%)
-        opacity: .7
+        transform: translate(-50%, -50%)
+        opacity: .9
   textarea.preview
     width: calc( 100% - #{$preview-width + $margin})
     background: $lightest

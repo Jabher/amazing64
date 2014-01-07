@@ -172,9 +172,12 @@ var viewManager = (function () {
             return e.string
         });
         var dataSetListJSON = JSON.stringify(newDataSetList);
-        while (dataSetListJSON > 2 * 1024 * 1024) {
-            newDataSetList.shift();
-            dataSetListJSON = JSON.stringify(newDataSetList);
+        if (dataSetListJSON > 2 * 1024 * 1024) {
+            var storedDataSetList = dataSetList.slice();
+            while (dataSetListJSON > 2 * 1024 * 1024) {
+                storedDataSetList.shift();
+                dataSetListJSON = JSON.stringify(storedDataSetList);
+            }
         }
         localStorage.dataSetList = dataSetListJSON;
         dataSetList = newDataSetList;
