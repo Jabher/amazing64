@@ -1,0 +1,141 @@
+$content-width: 1200px
+$header-height: 78px
+$footer-height: $header-height / 1.5
+
+$darkest: #403F3B
+$dark: #7F7D75
+$base: #BFBCB0
+$light: #E5E2D3
+$lightest: #FFFBEA
+
+header, footer
+  background: $darkest
+  h1,h2,h3,h4,h5,h6
+    margin: 0
+    padding: 0
+  *
+    color: $light
+body, .body
+  background: lighten($lightest, 20%)
+  *
+    color: $dark
+
+header, footer, .body
+  width: 100%
+  & > section
+    width: $content-width
+    margin-left: auto
+    margin-right: auto
+header, footer
+  position: absolute
+  left: 0
+header
+  height: $header-height
+footer
+  height: $footer-height
+header
+  top: 0
+footer
+  bottom: 0
+  z-index: 0
+.body
+  margin: $header-height 0 $footer-height
+  min-height: calc(100% - #{$footer-height + $header-height})
+
+
+@-webkit-keyframes background-pulse
+  0%, 100%
+    background: rgba(255,255,255,.8)
+  50%
+    background: rgba(255,255,255,.4)
+body.dragover:after
+  content: ''
+  position: fixed
+  left: 0
+  top: 0
+  width: 100%
+  height: 100%
+  z-index: 101
+.dragdropzone
+  display: none
+  body.dragover &
+    display: block
+  position: fixed
+  left: 0
+  top: 0
+  width: 100%
+  height: 100%
+  z-index: 100
+  &:before
+    content: ''
+    $padding: 20px
+    position: absolute
+    left: $padding
+    top: $padding
+    width: calc(100% - #{2 * $padding})
+    height: calc(100% - #{2 * $padding})
+    background: rgba(255,255,255,.8)
+    -webkit-animation: background-pulse 2.5s infinite
+    box-sizing: border-box
+    border: dashed 10px $dark
+    border-radius: 40px
+  &:after
+    content: 'drop your files here'
+    position: absolute
+    left: 0
+    top: 50%
+    line-height: 0
+    width: 100%
+    text-align: center
+    font-size: 36px
+section.content
+  &:empty:after
+    content: 'There\' s nothing here yet. Try dropping some files here \a\a\a Beware, there\'s 32kb file size limit due to 2 reasons: \a -lack of browser support \a -file processing causes high CPU utilisation'
+    width: 100%
+    text-align: center
+    white-space: pre
+    display: block
+    padding: 20px
+
+section
+  .previewTitle, .previewBody
+    width: 100%
+  .previewBody
+    text-align: right
+  .previewTitle span
+    &:not(:last-child):after
+      content: ';'
+      margin-right: 10px
+  span.fileName:before
+    content: 'File name: '
+  span.imageSize:before
+    content: 'Image size: '
+  span.mainColor:before
+    content: 'Image main color is: '
+  $body-height: 40px
+  $preview-width: $body-height
+  $margin: .5 * $preview-width
+  .imageContainer, textarea.preview
+    height: $body-height
+    display: inline-block
+  .imageContainer
+    width: $preview-width
+    margin-right: $margin
+    position: relative
+    .image
+      max-width: $preview-width
+      max-height: $body-height
+      background-size: cover
+      background-position: center
+      position: absolute
+      left: 50%
+      top: 50%
+      -webkit-transform: translate(-50%, -50%)
+  textarea.preview
+    width: calc( 100% - #{$preview-width + $margin})
+    background: $lightest
+    border: 1px $darkest solid
+    box-sizing: border-box
+    margin: 0
+    padding: 0
+    outline: none
