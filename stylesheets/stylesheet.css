@@ -57,6 +57,14 @@ body.dragover:after {
   height: 100%;
   z-index: 101; }
 
+.body:empty:after {
+  content: "There' s nothing here yet. Try dropping some files here \a\a\a Beware, there's 32kb file size limit due to 2 reasons: \a -lack of browser support \a -file processing causes high CPU utilisation";
+  width: 100%;
+  text-align: center;
+  white-space: pre;
+  display: block;
+  padding: 20px; }
+
 .dragdropzone {
   display: none;
   position: fixed;
@@ -88,14 +96,6 @@ body.dragover:after {
     width: 100%;
     text-align: center;
     font-size: 36px; }
-
-section.content:empty:after {
-  content: "There' s nothing here yet. Try dropping some files here \a\a\a Beware, there's 32kb file size limit due to 2 reasons: \a -lack of browser support \a -file processing causes high CPU utilisation";
-  width: 100%;
-  text-align: center;
-  white-space: pre;
-  display: block;
-  padding: 20px; }
 
 section {
   position: relative; }
