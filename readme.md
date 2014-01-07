@@ -21,3 +21,5 @@ Amazing64 has following features:
 
 So. Finally. The first base64 encoder that is developed to aid web developer.
 Enjoy it and feel free to extend it. Who knows, maybe you prefer to store fonts or videos in base64, and you are able to make custom preview? I'll be glad to see it.
+
+BTW, it's only IE10+. I hope, there are no guys in webdev with ie9.
