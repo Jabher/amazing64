@@ -2,7 +2,7 @@ if (!FileReader || !URL.createObjectURL) {
     alert('Your browser cannot work with Amazing64');
     throw new Error;
 }
-Object.prototype.extend = function(obj){
+Object.prototype.extend = function (obj) {
     for (var key in obj) if (obj.hasOwnProperty(key)) this[key] = this[key] || obj[key];
     return this;
 };
@@ -37,6 +37,7 @@ var base64Fabric = (function () {
         return new Promise(function (resolve) {
             generateImageLoadPromise(url).then(function (img) {
                 RGBaster.colors(img, function (payload) {
+                    console.log(payload);
                     resolve({
                         image: img,
                         color: payload.dominantUnwrapped
@@ -53,10 +54,10 @@ var base64Fabric = (function () {
                     createImageWithDominantsPromise(URL.createObjectURL(file))
                 ]).then(function (data) {
                     resolve(data[0].extend({
-                       width: data[1].image.width,
-                       height: data[1].image.height,
-                       color: data[1].color,
-                       type: 'image'
+                        width: data[1].image.width,
+                        height: data[1].image.height,
+                        color: data[1].color,
+                        type: 'image'
                     }));
                 })
         });
@@ -96,8 +97,9 @@ var viewManager = (function () {
             return '<textarea class="preview">' + dataSet.string + '</textarea>'
         },
         title: function (dataSet) {
+            var dangerSize = dataSet.fileSize > 32 * 1024;
             return '<span class="fileName">' + dataSet.fileName + '</span>' +
-                '<span class="fileSize">' + Math.ceil(dataSet.fileSize / 1024) + ' kB</span>'
+                '<span class="fileSize ' + (dangerSize ? 'danger' : '') + '">' + Math.ceil(dataSet.fileSize / 1024) + ' kB</span>'
         },
         imageDesc: function (dataSet) {
             return '<span class="imageSize">' + dataSet.width + 'px X ' + dataSet.height + 'px</span>'
@@ -105,7 +107,12 @@ var viewManager = (function () {
         colorDesc: function (dataSet) {
             return '<span class="mainColor" style="/*noinspection CssRgbFunction*/color: rgb(' + dataSet.color.join(',') + ')">' +
                 'rgb(' + dataSet.color.join(',') + ' (#' + dataSet.color.map(function (n) {
-                return n.toString(16)
+                var string = n.toString(16);
+                if (string.length === 1) {
+                    return '0' + string;
+                } else {
+                    return string;
+                }
             }).join('') + ')' +
                 '</span>'
         },
@@ -137,7 +144,7 @@ var viewManager = (function () {
 
     function createPreview(dataSet, index) {
         var preview = createPreviewObject(dataSet);
-        return '<section data-id="'+index+'">' +
+        return '<section data-id="' + index + '">' +
             '<div class="previewTitle">' + preview.title + '</div>' +
             '<div class="previewBody">' + preview.body + '</div>' +
             '<div class="remove cross"></div>' +
@@ -149,15 +156,18 @@ var viewManager = (function () {
     if (localStorage.dataSetList) {
         try {
             dataSetList = JSON.parse(localStorage.dataSetList);
-            if (!Array.isArray(dataSetList)){
+            if (!Array.isArray(dataSetList)) {
                 dataSetList = [];
             }
             render(dataSetList);
-        } catch (e){}
+        } catch (e) {
+        }
     }
 
     function render(newDataSetList) {
-        newDataSetList = newDataSetList.uniqueBy(function(e){return e.string});
+        newDataSetList = newDataSetList.uniqueBy(function (e) {
+            return e.string
+        });
         var dataSetListJSON = JSON.stringify(newDataSetList);
         while (dataSetListJSON > 2 * 1024 * 1024) {
             newDataSetList.shift();
@@ -165,7 +175,7 @@ var viewManager = (function () {
         }
         localStorage.dataSetList = dataSetListJSON;
         dataSetList = newDataSetList;
-        VIEW_ZONE.innerHTML = dataSetList.map(createPreview).join('')
+        VIEW_ZONE.innerHTML = dataSetList.map(createPreview).reverse().join('')
     }
 
     function addPreview(preview) {
@@ -173,10 +183,10 @@ var viewManager = (function () {
         render(dataSetList);
     }
 
-    VIEW_ZONE.addEventListener('click',function(e){
+    VIEW_ZONE.addEventListener('click', function (e) {
         if (e.target.classList.contains('remove')) {
             var index = Number(e.target.parentElement.dataset.id);
-            render(dataSetList.slice(0, index).concat(dataSetList.slice(index+1)))
+            render(dataSetList.slice(0, index).concat(dataSetList.slice(index + 1)))
         }
     });
 
@@ -191,7 +201,7 @@ var viewManager = (function () {
 
 //dropper
 (function () {
-    var MAX_FILE_SIZE = 32 * 1024,
+    var MAX_FILE_SIZE = 256 * 1024,
         DROP_CONTAINER = document.body,
         DROP_ZONE = document.querySelector('.dragdropzone');
 
@@ -218,7 +228,6 @@ var viewManager = (function () {
         if (file.size <= MAX_FILE_SIZE) viewManager.addFile(file)
     }
 }).call(this);
-
 
 
 //todo dragndrop элементов

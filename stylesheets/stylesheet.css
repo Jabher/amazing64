@@ -111,6 +111,7 @@ section {
   section .previewBody {
     text-align: right; }
   section .previewTitle span:not(:last-child):after {
+    color: #403f3b;
     content: ";";
     margin-right: 10px; }
   section span.fileName:before {
@@ -119,6 +120,8 @@ section {
     content: "Image size: "; }
   section span.mainColor:before {
     content: "Image main color is: "; }
+  section span.fileSize.danger {
+    color: red; }
   section .imageContainer, section textarea.preview {
     height: 40px;
     display: inline-block; }

@@ -114,6 +114,7 @@ section
     text-align: right
   .previewTitle span
     &:not(:last-child):after
+      color: $darkest
       content: ';'
       margin-right: 10px
   span.fileName:before
@@ -122,6 +123,8 @@ section
     content: 'Image size: '
   span.mainColor:before
     content: 'Image main color is: '
+  span.fileSize.danger
+    color: red
   $body-height: 40px
   $preview-width: $body-height
   $margin: .5 * $preview-width
