@@ -37,7 +37,6 @@ var base64Fabric = (function () {
         return new Promise(function (resolve) {
             generateImageLoadPromise(url).then(function (img) {
                 RGBaster.colors(img, function (payload) {
-                    console.log(payload);
                     resolve({
                         image: img,
                         color: payload.dominantUnwrapped
@@ -105,15 +104,19 @@ var viewManager = (function () {
             return '<span class="imageSize">' + dataSet.width + 'px X ' + dataSet.height + 'px</span>'
         },
         colorDesc: function (dataSet) {
-            return '<span class="mainColor" style="/*noinspection CssRgbFunction*/color: rgb(' + dataSet.color.join(',') + ')">' +
-                'rgb(' + dataSet.color.join(',') + ' (#' + dataSet.color.map(function (n) {
+            console.log(((dataSet.color.reduce(function(a,b){return a+b}) < 512) ? 'color: white' : ''));
+            return '<span class="mainColor" style="' +
+                '/*noinspection CssRgbFunction*/ background: rgb(' + dataSet.color.join(',') + ');' +
+                ((dataSet.color.reduce(function(a,b){return a+b}) < 256 * 1.5) ? 'color: white' : '') +
+                '">' +
+                'rgb(' + dataSet.color.join(',') + ') #' + dataSet.color.map(function (n) {
                 var string = n.toString(16);
                 if (string.length === 1) {
                     return '0' + string;
                 } else {
                     return string;
                 }
-            }).join('') + ')' +
+            }).join('') +
                 '</span>'
         },
         imagePreview: function (dataSet) {
@@ -201,7 +204,7 @@ var viewManager = (function () {
 
 //dropper
 (function () {
-    var MAX_FILE_SIZE = 256 * 1024,
+    var MAX_FILE_SIZE = 1024 * 1024,
         DROP_CONTAINER = document.body,
         DROP_ZONE = document.querySelector('.dragdropzone');
 

@@ -58,7 +58,7 @@ body.dragover:after {
   z-index: 101; }
 
 .body:empty:after {
-  content: "There' s nothing here yet. Try dropping some files here \a\a\a Beware, there's 32kb file size limit due to 2 reasons: \a -lack of browser support \a -file processing causes high CPU utilisation";
+  content: "There' s nothing here yet. Try dropping some files here \a\a\a Beware, there's 1mb file size limit";
   width: 100%;
   text-align: center;
   white-space: pre;
