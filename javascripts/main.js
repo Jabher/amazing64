@@ -122,11 +122,6 @@ var viewManager = (function () {
     function createPreviewObject(dataSet) {
         switch (dataSet.type) {
             case 'image':
-                console.log(template.title(dataSet));
-                console.log(template.imageDesc(dataSet));
-                console.log(template.colorDesc(dataSet));
-                console.log(template.imagePreview(dataSet));
-                console.log(template.body(dataSet));
                 return {
                     title: template.title(dataSet) + template.imageDesc(dataSet) + template.colorDesc(dataSet),
                     body: template.imagePreview(dataSet) + template.body(dataSet)
@@ -140,17 +135,15 @@ var viewManager = (function () {
         }
     }
 
-    function createPreview(dataSet) {
+    function createPreview(dataSet, index) {
         var preview = createPreviewObject(dataSet);
-        return '<section>' +
+        return '<section data-id="'+index+'">' +
             '<div class="previewTitle">' + preview.title + '</div>' +
             '<div class="previewBody">' + preview.body + '</div>' +
+            '<div class="remove cross"></div>' +
             '</section>'
     }
 
-    function render(dataSetList) {
-        VIEW_ZONE.innerHTML = dataSetList.map(createPreview).join('')
-    }
 
     var dataSetList = [];
     if (localStorage.dataSetList) {
@@ -163,17 +156,29 @@ var viewManager = (function () {
         } catch (e){}
     }
 
-    function addPreview(preview) {
-        dataSetList.push(preview);
-        dataSetList = dataSetList.uniqueBy(function(e){return e.string});
-        var dataSetListJSON = JSON.stringify(dataSetList);
+    function render(newDataSetList) {
+        newDataSetList = newDataSetList.uniqueBy(function(e){return e.string});
+        var dataSetListJSON = JSON.stringify(newDataSetList);
         while (dataSetListJSON > 2 * 1024 * 1024) {
-            dataSetList.shift();
-            dataSetListJSON = JSON.stringify(dataSetList);
+            newDataSetList.shift();
+            dataSetListJSON = JSON.stringify(newDataSetList);
         }
         localStorage.dataSetList = dataSetListJSON;
+        dataSetList = newDataSetList;
+        VIEW_ZONE.innerHTML = dataSetList.map(createPreview).join('')
+    }
+
+    function addPreview(preview) {
+        dataSetList.push(preview);
         render(dataSetList);
     }
+
+    VIEW_ZONE.addEventListener('click',function(e){
+        if (e.target.classList.contains('remove')) {
+            var index = Number(e.target.parentElement.dataset.id);
+            render(dataSetList.slice(0, index).concat(dataSetList.slice(index+1)))
+        }
+    });
 
     return {
         addFile: function (file) {
@@ -213,3 +218,8 @@ var viewManager = (function () {
         if (file.size <= MAX_FILE_SIZE) viewManager.addFile(file)
     }
 }).call(this);
+
+
+
+//todo dragndrop элементов
+//todo кнопка сброса

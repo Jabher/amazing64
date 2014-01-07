@@ -39,9 +39,10 @@ footer
   bottom: 0
   z-index: 0
 .body
-  margin: $header-height 0 $footer-height
-  min-height: calc(100% - #{$footer-height + $header-height})
-
+  padding: $header-height 0 $footer-height
+  box-sizing: border-box
+  margin-bottom: - $footer-height - $header-height
+  min-height: 100vh
 
 @-webkit-keyframes background-pulse
   0%, 100%
@@ -98,6 +99,15 @@ section.content
     padding: 20px
 
 section
+  position: relative
+  .cross
+    position: absolute
+    right: 0
+    top: 0
+    cursor: pointer
+    &:after
+      content: 'x'
+
   .previewTitle, .previewBody
     width: 100%
   .previewBody
