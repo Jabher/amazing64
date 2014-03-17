@@ -104,6 +104,7 @@ var viewManager = (function () {
             return '<span class="imageSize">' + dataSet.width + 'px X ' + dataSet.height + 'px</span>'
         },
         colorDesc: function (dataSet) {
+            dataSet.color = dataSet.color || [];
             console.log(((dataSet.color.reduce(function(a,b){return a+b}) < 512) ? 'color: white' : ''));
             return '<span class="mainColor" style="' +
                 '/*noinspection CssRgbFunction*/ background: rgb(' + dataSet.color.join(',') + ');' +
