@@ -38,7 +38,6 @@ footer {
 .body {
   padding: 78px 0 52px;
   box-sizing: border-box;
-  margin-bottom: -130px;
   min-height: 100vh; }
 
 @-webkit-keyframes background-pulse {
