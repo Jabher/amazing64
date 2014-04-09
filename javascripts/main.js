@@ -125,7 +125,9 @@ var viewManager = (function () {
                 '<div class="image" style="' +
                 'width: ' + dataSet.width + 'px; ' +
                 'height: ' + dataSet.height + 'px; ' +
-                'background-image: url(' + dataSet.string + ')"></div>' +
+                'background-image: url(' + dataSet.string + ')' +
+                (dataSet.color ? '' : '; background-color: rgba(0,0,0,.9)') +
+                '"></div>' +
                 '</div>'
         }
     };
